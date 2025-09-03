@@ -99,12 +99,14 @@ codigo:
         deleteBtn.textContent = 'Eliminar';
         deleteBtn.addEventListener('click', () => {
           infoList.removeChild(item);
+          guardarTareas; //    -----guardar----
         });
 
         // Añadir todo al contenedor
         item.appendChild(infoBar);
         item.appendChild(deleteBtn);
         infoList.appendChild(item);
+        guardarTareas(); //     ------guardar-----
 
         // Limpiar el input
         infoInput.value = "";
@@ -114,4 +116,5 @@ codigo:
   </script>
 
 </body>
+
 </html>
