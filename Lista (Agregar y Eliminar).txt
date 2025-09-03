@@ -99,7 +99,7 @@ codigo:
         deleteBtn.textContent = 'Eliminar';
         deleteBtn.addEventListener('click', () => {
           infoList.removeChild(item);
-          guardarTareas; //    -----guardar----
+          guardarTareas(); //    -----guardar----
         });
 
         // Añadir todo al contenedor
@@ -118,3 +118,4 @@ codigo:
 </body>
 
 </html>
+
