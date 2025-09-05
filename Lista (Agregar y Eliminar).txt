@@ -27,34 +27,29 @@ codigo:
   <style>
     body {
       font-family: Arial, sans-serif;
-      padding: 20px;
+      padding: 10px;
     }
-
     .input-section {
       display: flex;
       gap: 10px;
       margin-bottom: 20px;
     }
-
     .info-list {
       display: flex;
       flex-direction: column;
       gap: 10px;
     }
-
     .info-item {
       display: flex;
       align-items: center;
       gap: 10px;
     }
-
     .info-bar {
       flex-grow: 1;
       padding: 5px 10px;
       background-color: #f0f0f0;
       border: 1px solid #ccc;
     }
-
     button {
       padding: 5px 10px;
       cursor: pointer;
@@ -71,8 +66,7 @@ codigo:
   </div>
 
   <div class="info-list" id="infoList">
-    <!-- Aquí se agregarán dinámicamente los elementos -->
-  </div>
+    </div>
 
   <script>
     // Obtener los elementos del DOM
@@ -80,7 +74,22 @@ codigo:
     const infoInput = document.getElementById('infoInput');
     const infoList = document.getElementById('infoList');
 
-    // Función para agregar nueva información
+    // ===================================================================
+    // NUEVA FUNCIÓN PARA GUARDAR LA LISTA ACTUAL EN LOCALSTORAGE
+    // ===================================================================
+    function guardarTareas() {
+      const tareasActuales = [];
+      // Buscamos todos los elementos de la lista que están en la pantalla
+      const elementosDeLista = document.querySelectorAll('.info-bar');
+      // Por cada elemento, guardamos su texto en nuestro array
+      elementosDeLista.forEach(function(elemento) {
+        tareasActuales.push(elemento.textContent);
+      });
+      // Guardamos el array como un string en localStorage
+      localStorage.setItem('misTareasGuardadas', JSON.stringify(tareasActuales));
+    }
+
+    // Función para agregar nueva información (TU CÓDIGO ORIGINAL CON 2 LÍNEAS NUEVAS)
     addBtn.addEventListener('click', () => {
       const texto = infoInput.value.trim();
 
@@ -99,23 +108,56 @@ codigo:
         deleteBtn.textContent = 'Eliminar';
         deleteBtn.addEventListener('click', () => {
           infoList.removeChild(item);
-          guardarTareas(); //    -----guardar----
+          guardarTareas(); // <-- 1. LÍNEA NUEVA: Guardamos al eliminar
         });
 
         // Añadir todo al contenedor
         item.appendChild(infoBar);
         item.appendChild(deleteBtn);
         infoList.appendChild(item);
-        guardarTareas(); //     ------guardar-----
+
+        guardarTareas(); // <-- 2. LÍNEA NUEVA: Guardamos al agregar
 
         // Limpiar el input
         infoInput.value = "";
         infoInput.focus();
       }
     });
+
+    // ===================================================================
+    // NUEVO CÓDIGO QUE SE EJECUTA AL CARGAR LA PÁGINA
+    // ===================================================================
+    // Leemos las tareas que podrían estar guardadas
+    const tareasGuardadas = localStorage.getItem('misTareasGuardadas');
+    
+    // Si había tareas guardadas...
+    if (tareasGuardadas) {
+      // Las convertimos de texto a un array
+      const tareas = JSON.parse(tareasGuardadas);
+      
+      // Por cada una de las tareas guardadas...
+      tareas.forEach(function(textoDeTarea) {
+        // ...replicamos la lógica de creación de elementos que ya tenías
+        const item = document.createElement('div');
+        item.className = 'info-item';
+
+        const infoBar = document.createElement('div');
+        infoBar.className = 'info-bar';
+        infoBar.textContent = textoDeTarea;
+
+        const deleteBtn = document.createElement('button');
+        deleteBtn.textContent = 'Eliminar';
+        deleteBtn.addEventListener('click', () => {
+          infoList.removeChild(item);
+          guardarTareas(); // También aquí guardamos al eliminar
+        });
+
+        item.appendChild(infoBar);
+        item.appendChild(deleteBtn);
+        infoList.appendChild(item);
+      });
+    }
   </script>
 
 </body>
-
 </html>
-
